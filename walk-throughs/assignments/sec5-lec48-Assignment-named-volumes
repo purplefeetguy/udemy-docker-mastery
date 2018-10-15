@@ -1,0 +1,32 @@
+Database upgrade with containers
+
+create a postgres container with named volume psql-data using version 9.6.1
+
+user docker hub to learn VOLUME path and versions needed to run it
+
+check logs, stop container
+
+create a new postgres container with same named volume using 9.6.2
+
+check logs to validate
+
+(this only work with patch version, most SQL DB's require manual commands to upgrade DB's to major/minor version, i.e it's a DB limitation, not a container one)
+
+
+
+##################
+
+
+docker container run -d --name psql -v psql:/var/lig/postgresql/data postgres:9.6.1
+
+docker container logs -f psql
+
+docker container stop psql
+
+docker container run -d --name psql2 -v psql:/var/lig/postgresql/data postgres:9.6.2
+
+docker container ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
+b300db26722a        postgres:9.6.2      "docker-entrypoint.s…"   2 minutes ago       Up 2 minutes               5432/tcp            psql2
+12e52715194c        postgres:9.6.1      "/docker-entrypoint.…"   4 minutes ago       Exited (0) 2 minutes ago                       psql
+docker container logs psql2
