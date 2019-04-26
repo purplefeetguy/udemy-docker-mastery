@@ -2,12 +2,13 @@
 # ./compose-assignment-2
 # If taking Swarm Mastery, this is your starting point for adding secrets :)
 # reminder, this needs to change to 3.1 version to use secrets!
-version: '3.1'
+version: '2'
 
 services:
 
   drupal:
-    image: drupal:8.2
+    image: custom-drupal
+    build: .
     ports:
       - "8080:80"
     volumes:
@@ -19,9 +20,7 @@ services:
   postgres:
     image: postgres:9.6
     environment:
-      - POSTGRES_PASSWORD_FILE=/run/secrets/psql-pw
-    secrets:
-      - psql-pw
+      - POSTGRES_PASSWORD=mypasswd
     volumes:
       - drupal-data:/var/lib/postgresql/data
 
@@ -31,7 +30,3 @@ volumes:
   drupal-profiles:
   drupal-sites:
   drupal-themes:
-
-secrets:
-  psql-pw:
-    external: true
